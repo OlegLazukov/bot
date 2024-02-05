@@ -1,7 +1,6 @@
 #- *- coding: utf - 8 - *-
 import telebot
 import Config
-import random
 from telebot import types
 from emoji import emojize
 from Neiro import Text2ImageAPI
@@ -33,16 +32,14 @@ def funcy(message):
     if message.chat.type == "private":
         if message.text == "Найти картинку!":
             mesg = bot.send_message(message.chat.id, "Введи текст, а я в свою очередь сгенерирую картинку!")
-            bot.register_next_step_handler(mesg, test)
-            def test(message = mesg):
-                model_id = api.get_model()
-                uuid = api.generate(message.lower(), model_id)
-                images = api.check_generation(uuid)
-                image_base64 = images[0]
-                image_data = base64.b64decode(image_base64)
-                with open("image.jpg", "wb") as file:
-                    file.write(image_data)
-                    bot.send_photo(message.chat.id, photo=image_data)
+            model_id = api.get_model()
+            uuid = api.generate(message.lower(), model_id)
+            images = api.check_generation(uuid)
+            image_base64 = images[0]
+            image_data = base64.b64decode(image_base64)
+            with open("image.jpg", "wb") as file:
+                file.write(image_data)
+                bot.send_photo(message.chat.id, photo=image_data)
         elif message.text == "Хочу начать зарабатывать!":
             markup = types.InlineKeyboardMarkup(row_width=2)
             item1 = types.InlineKeyboardButton(emojize("Уверен:grinning_face:"), callback_data="sure")
