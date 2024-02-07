@@ -9,7 +9,6 @@ import base64
 bot = telebot.TeleBot(Config.TOKEN)
 api = Text2ImageAPI('https://api-key.fusionbrain.ai/', Config.api_key, Config.secret_key)
 
-
 @bot.message_handler(commands=["start"])
 def welcome(message):
     stick = open("5203978965076680784.tgs", "rb")
@@ -31,15 +30,21 @@ def funcy(message):
     name_bot = str(bot.get_me().first_name)
     if message.chat.type == "private":
         if message.text == "Найти картинку!":
-            mesg = bot.send_message(message.chat.id, "Введи текст, а я в свою очередь сгенерирую картинку!")
-            model_id = api.get_model()
-            uuid = api.generate(message.lower(), model_id)
-            images = api.check_generation(uuid)
-            image_base64 = images[0]
-            image_data = base64.b64decode(image_base64)
-            with open("image.jpg", "wb") as file:
-                file.write(image_data)
-                bot.send_photo(message.chat.id, photo=image_data)
+            bot.reply_to(message, "Введи текст, а я в свою очередь сгенерирую картинку!\nТолько придется немного подождать😉")
+            @bot.message_handler(content_types=['text'])
+            def message_input_step(message):
+                global text
+                text = message.text
+                model_id = api.get_model()
+                uuid = api.generate(text.lower(), model_id)
+                images = api.check_generation(uuid)
+                image_base64 = images[0]
+                image_data = base64.b64decode(image_base64)
+                with open("image.jpg", "wb") as file:
+                    file.write(image_data)
+                    bot.reply_to(message, "Вот, что удалось найти по твоему запросу.\nНадеюсь это то, что ты искал дружище😇")
+                    bot.send_photo(message.chat.id, photo=image_data)
+            bot.register_next_step_handler(message, message_input_step)
         elif message.text == "Хочу начать зарабатывать!":
             markup = types.InlineKeyboardMarkup(row_width=2)
             item1 = types.InlineKeyboardButton(emojize("Уверен:grinning_face:"), callback_data="sure")
