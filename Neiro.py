@@ -2,7 +2,6 @@ import json
 import time
 import base64
 import requests
-import Config
 
 class Text2ImageAPI:
 
@@ -47,14 +46,5 @@ class Text2ImageAPI:
             attempts -= 1
             time.sleep(delay)
 
-# if __name__ == '__main__':
-#     api = Text2ImageAPI('https://api-key.fusionbrain.ai/', Config.api_key, Config.secret_key)
-#     model_id = api.get_model()
-#     uuid = api.generate(input("Введите описание картинки: ").lower(), model_id)
-#     images = api.check_generation(uuid)
-#     image_base64 = images[0]
-#     image_data = base64.b64decode(image_base64)
-#     with open("image.jpg", "wb") as file:
-#         file.write(image_data)
 
 
