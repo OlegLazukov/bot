@@ -8,6 +8,7 @@ import base64
 
 bot = telebot.TeleBot(Config.TOKEN)
 api = Text2ImageAPI('https://api-key.fusionbrain.ai/', Config.api_key, Config.secret_key)
+name_bot = str(bot.get_me().first_name)
 
 @bot.message_handler(commands=["start"])
 def welcome(message):
@@ -27,7 +28,6 @@ def welcome(message):
 
 @bot.message_handler(content_types=["text"])
 def funcy(message):
-    name_bot = str(bot.get_me().first_name)
     if message.chat.type == "private":
         if message.text == "Найти картинку!":
             bot.reply_to(message, "Введи текст, а я в свою очередь сгенерирую картинку!\nТолько придется немного подождать😉")
@@ -70,6 +70,6 @@ def callback_inline(call):
 
     except:
         bot.send_message(message.chat.id, f"{name_bot} не может помочь тебе")
-if __name__ = "__main__"
+        
     bot.polling(none_stop=True)
 
