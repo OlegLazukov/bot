@@ -70,6 +70,6 @@ def callback_inline(call):
 
     except:
         bot.send_message(call.message.chat.id, f"{name_bot} не может помочь тебе")
-        
+if __name__ == '__main__':        
     bot.polling(none_stop=True)
 
